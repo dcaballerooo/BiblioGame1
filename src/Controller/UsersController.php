@@ -42,6 +42,19 @@ class UsersController extends AppController
             $this->Flash->error(__('Invalid email or password'));
         }
     }
+    /**
+     * Logout method
+     *
+     */
+    public function logout()
+    {
+        $result = $this->Authentication->getResult();
+        // regardless of POST or GET, redirect if user is logged in
+        if ($result->isValid()) {
+            $this->Authentication->logout();
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
+    }
 
 
     /**
@@ -83,11 +96,11 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('La cuenta ha sido creada correctamente, ¡BIENVENIDO!'));
 
                 return $this->redirect(['action' => 'login']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('La cuenta no se ha podido crear, por favor, inténtelo de nuevo'));
         }
         $games = $this->Users->Games->find('list', ['limit' => 200])->all();
         $this->set(compact('user', 'games'));
@@ -108,11 +121,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('La cuenta ha sido modificada con éxito'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('La cuenta no se ha podido modificar, por favor inténtelo de nuevo'));
         }
         $games = $this->Users->Games->find('list', ['limit' => 200])->all();
         $this->set(compact('user', 'games'));
@@ -130,11 +143,11 @@ class UsersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
+            $this->Flash->success(__('La cuenta ha sido eliminada'));
         } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+            $this->Flash->error(__('La cuenta no se ha podido eliminar por favor, inténtelo de nuevo'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'login']);
     }
 }

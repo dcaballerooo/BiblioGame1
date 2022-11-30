@@ -1,52 +1,116 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Game> $games
  */
+
+use function PHPSTORM_META\type;
+
+$this->loadHelper('Authentication.Identity');
 ?>
-<div class="games index content">
-    <?= $this->Html->link(__('New Game'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Games') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('gender') ?></th>
-                    <th><?= $this->Paginator->sort('sub_type') ?></th>
-                    <th><?= $this->Paginator->sort('cover') ?></th>
-                    <th><?= $this->Paginator->sort('url') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($games as $game): ?>
-                <tr>
-                    <td><?= $this->Number->format($game->id) ?></td>
-                    <td><?= h($game->name) ?></td>
-                    <td><?= h($game->gender) ?></td>
-                    <td><?= h($game->sub_type) ?></td>
-                    <td><?= h($game->cover) ?></td>
-                    <td><?= h($game->url) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $game->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $game->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $game->id], ['confirm' => __('Are you sure you want to delete # {0}?', $game->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-content header-text">
+                <?php if ($this->Identity->get('rol') == 'admin') {
+                    echo $this->Html->link(__('Nuevo Juego'), ['action' => 'add'], ['class' => 'button float-right']);
+                } ?>
+
+                <!-- ***** Para Todos Start ***** -->
+                <div class="most-popular">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="heading-section">
+                                <h4>Para <em>Todos</em></h4>
+                            </div>
+                            <div class="row">
+                                <?php foreach ($games as $game) :
+                                    if ($game->sub_type == 'free-to-play') { ?>
+                                        <div class="col-lg-3 col-sm-6">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <?= $this->Html->image('/webroot/img/' . $game->cover, ['alt' => 'CakePHP']); ?>
+
+                                                    <h6><?= $this->Html->link(__('Detalles'), ['action' => 'view', $game->id]) ?></h6>
+                                                </div>
+                                                <h4><?= h($game->name) ?><br><span><?= h($game->gender) ?></span></h4>
+                                                <ul>
+                                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                <?php }
+                                endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Para todos End ***** -->
+
+
+                <!-- ***** Para Premium Start ***** -->
+                <?php if ($this->Identity->get('rol') == 'premium' || $this->Identity->get('rol') == 'sin-limites' || $this->Identity->get('rol') == 'admin') { ?>
+                    <div class="most-popular">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="heading-section">
+                                    <h4>Para <em>Premiums</em></h4>
+                                </div>
+                                <div class="row">
+                                    <?php foreach ($games as $game) :
+                                        if ($game->sub_type == 'premium') { ?>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <div class="item">
+                                                    <?= $this->Html->image('/webroot/img/' . $game->cover, ['alt' => 'CakePHP']); ?>
+                                                    <h6><?= $this->Html->link(__('Saber Más'), ['action' => 'view', $game->id]) ?></h6>
+                                                    <h4><?= h($game->name) ?><br><span><?= h($game->gender) ?></span></h4>
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i> 4.8</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <!-- ***** Para Premium End ***** -->
+
+                <!-- ***** Para Sin-Limites Start ***** -->
+                <?php if ($this->Identity->get('rol') == 'sin-limites' || $this->Identity->get('rol') == 'admin') { ?>
+                    <div class="most-popular">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="heading-section">
+                                    <h4>Para <em>Sin-Límites</em></h4>
+                                </div>
+                                <div class="row">
+                                    <?php foreach ($games as $game) :
+                                        if ($game->sub_type == 'sin-limites') { ?>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <div class="item">
+                                                    <?= $this->Html->image('/webroot/img/' . $game->cover, ['alt' => 'CakePHP']); ?>
+                                                    <h6><?= $this->Html->link(__('Saber Más'), ['action' => 'view', $game->id]) ?></h6>
+                                                    <h4><?= h($game->name) ?><br><span><?= h($game->gender) ?></span></h4>
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i> 4.8</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php }  ?>
+                <!-- ***** Para Sin-Limites End ***** -->
+
+            </div>
+
+        </div>
     </div>
 </div>

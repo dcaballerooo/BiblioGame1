@@ -1,32 +1,34 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  * @var \Cake\Collection\CollectionInterface|string[] $games
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="users form content">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Add User') ?></legend>
-                <?php
-                    echo $this->Form->control('password');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('username');
-                    echo $this->Form->control('rol');
-                    echo $this->Form->control('games._ids', ['options' => $games]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="page-content header-text">
+                <div class="heading-section">
+                    <h4>Regístrate</h4>
+                </div>
+                <div class="column-responsive column-80">
+                    <div class="users form content">
+                        <?= $this->Form->create($user) ?>
+                        <fieldset>
+                            <?php
+                            echo $this->Form->control('email');
+                            echo $this->Form->control('password');
+                            echo $this->Form->control('username');
+                            echo $this->Form->control('rol',['options'=> ['usuario'=>'usuario','premium'=>'premium','sin-limites'=>'sin-limites']]);
+                            ?>
+                        </fieldset>
+                        <?= $this->Form->button(__('Listo')) ?>
+                        <?= $this->Form->end() ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

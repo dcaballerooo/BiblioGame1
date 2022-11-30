@@ -11,6 +11,14 @@ namespace App\Controller;
  */
 class ComentsnewsController extends AppController
 {
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+      {
+          parent::beforeFilter($event);
+          // Configure the login action to not require authentication, preventing
+          // the infinite redirect loop issue
+         $this->Authentication->addUnauthenticatedActions(['index']);
+      }
     /**
      * Index method
      *
@@ -27,22 +35,6 @@ class ComentsnewsController extends AppController
     }
 
     /**
-     * View method
-     *
-     * @param string|null $id Comentsnews id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $comentsnews = $this->Comentsnews->get($id, [
-            'contain' => ['News', 'Users'],
-        ]);
-
-        $this->set(compact('comentsnews'));
-    }
-
-    /**
      * Add method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
@@ -52,12 +44,13 @@ class ComentsnewsController extends AppController
         $comentsnews = $this->Comentsnews->newEmptyEntity();
         if ($this->request->is('post')) {
             $comentsnews = $this->Comentsnews->patchEntity($comentsnews, $this->request->getData());
+            $comentsnews->user_id = $this->Authentication->getResult()->getData()->id;
             if ($this->Comentsnews->save($comentsnews)) {
-                $this->Flash->success(__('The comentsnews has been saved.'));
+                $this->Flash->success(__('El comentario sobre la noticia se ha añadido con éxito.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The comentsnews could not be saved. Please, try again.'));
+            $this->Flash->error(__('No se ha podido añadir tu comentario, porfavor intentelo de nuevo.'));
         }
         $news = $this->Comentsnews->News->find('list', ['limit' => 200])->all();
         $users = $this->Comentsnews->Users->find('list', ['limit' => 200])->all();
@@ -78,12 +71,13 @@ class ComentsnewsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $comentsnews = $this->Comentsnews->patchEntity($comentsnews, $this->request->getData());
+            $comentsnews->user_id = $this->Authentication->getResult()->getData()->id;
             if ($this->Comentsnews->save($comentsnews)) {
-                $this->Flash->success(__('The comentsnews has been saved.'));
+                $this->Flash->success(__('El comentario sobre la noticia se ha editado con éxito.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The comentsnews could not be saved. Please, try again.'));
+            $this->Flash->error(__('No se ha podido editar tu comentario, porfavor intentelo de nuevo.'));
         }
         $news = $this->Comentsnews->News->find('list', ['limit' => 200])->all();
         $users = $this->Comentsnews->Users->find('list', ['limit' => 200])->all();
@@ -102,9 +96,9 @@ class ComentsnewsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $comentsnews = $this->Comentsnews->get($id);
         if ($this->Comentsnews->delete($comentsnews)) {
-            $this->Flash->success(__('The comentsnews has been deleted.'));
+            $this->Flash->success(__('El comentario sobre la noticia se ha eliminado con éxito.'));
         } else {
-            $this->Flash->error(__('The comentsnews could not be deleted. Please, try again.'));
+            $this->Flash->error(__('No se ha podido eliminar tu comentario, porfavor intentelo de nuevo..'));
         }
 
         return $this->redirect(['action' => 'index']);

@@ -69,13 +69,11 @@ class ComentsnewsTable extends Table
 
         $validator
             ->integer('new_id')
-            ->notEmptyString('new_id')
-            ->add('new_id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('new_id');
 
         $validator
             ->integer('user_id')
-            ->notEmptyString('user_id')
-            ->add('user_id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('user_id');
 
         return $validator;
     }

@@ -11,6 +11,14 @@ namespace App\Controller;
  */
 class GamesController extends AppController
 {
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+      {
+          parent::beforeFilter($event);
+          // Configure the login action to not require authentication, preventing
+          // the infinite redirect loop issue
+         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+      }
     /**
      * Index method
      *
@@ -50,11 +58,11 @@ class GamesController extends AppController
         if ($this->request->is('post')) {
             $game = $this->Games->patchEntity($game, $this->request->getData());
             if ($this->Games->save($game)) {
-                $this->Flash->success(__('The game has been saved.'));
+                $this->Flash->success(__('El juego se ha añadido con éxito'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The game could not be saved. Please, try again.'));
+            $this->Flash->error(__('El juego no se ha podido añadir, porfavor inténtelo de nuevo'));
         }
         $users = $this->Games->Users->find('list', ['limit' => 200])->all();
         $this->set(compact('game', 'users'));
@@ -75,11 +83,11 @@ class GamesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $game = $this->Games->patchEntity($game, $this->request->getData());
             if ($this->Games->save($game)) {
-                $this->Flash->success(__('The game has been saved.'));
+                $this->Flash->success(__('El juego se ha editado con éxito'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The game could not be saved. Please, try again.'));
+            $this->Flash->error(__('El juego no se ha podido editar, porfavor inténtelo de nuevo'));
         }
         $users = $this->Games->Users->find('list', ['limit' => 200])->all();
         $this->set(compact('game', 'users'));
@@ -97,9 +105,9 @@ class GamesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $game = $this->Games->get($id);
         if ($this->Games->delete($game)) {
-            $this->Flash->success(__('The game has been deleted.'));
+            $this->Flash->success(__('El juego se ha eliminado con éxito'));
         } else {
-            $this->Flash->error(__('The game could not be deleted. Please, try again.'));
+            $this->Flash->error(__('El juego no se ha podido eliminar, porfavor inténtelo de nuevo'));
         }
 
         return $this->redirect(['action' => 'index']);

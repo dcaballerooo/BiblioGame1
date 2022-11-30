@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div class="page-content">
+      <div class="page-content header-text">
 
             <div class="users form">
                 <?= $this->Flash->render() ?>
@@ -21,7 +21,7 @@
                     <?= $this->Form->control('password', ['required' => true]) ?>
             </fieldset><br>                                                                                           
             <div class="main-button">
-                    <?= $this->Form->submit(__('Login')); ?>
+                    <?= $this->Form->submit(__('Entrar')); ?>
                     <?= $this->Form->end() ?>
             </div><br>
             <div class="main-button">

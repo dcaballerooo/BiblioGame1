@@ -55,6 +55,25 @@ class UsersGamesTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->integer('user_id')
+            ->notEmptyString('user_id');
+
+        $validator
+            ->integer('game_id')
+            ->notEmptyString('game_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *

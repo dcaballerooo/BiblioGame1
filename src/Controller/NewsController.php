@@ -11,6 +11,15 @@ namespace App\Controller;
  */
 class NewsController extends AppController
 {
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+      {
+          parent::beforeFilter($event);
+          // Configure the login action to not require authentication, preventing
+          // the infinite redirect loop issue
+         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+      }
+
     /**
      * Index method
      *
@@ -50,11 +59,11 @@ class NewsController extends AppController
         if ($this->request->is('post')) {
             $news = $this->News->patchEntity($news, $this->request->getData());
             if ($this->News->save($news)) {
-                $this->Flash->success(__('The news has been saved.'));
+                $this->Flash->success(__('La noticia ha sido añadida.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The news could not be saved. Please, try again.'));
+            $this->Flash->error(__('No se ha podido guardar la noticia, porfavor, inténtelo de nuevo'));
         }
         $this->set(compact('news'));
     }
@@ -74,11 +83,11 @@ class NewsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $news = $this->News->patchEntity($news, $this->request->getData());
             if ($this->News->save($news)) {
-                $this->Flash->success(__('The news has been saved.'));
+                $this->Flash->success(__('La noticia se ha editado con éxito'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The news could not be saved. Please, try again.'));
+            $this->Flash->error(__('No se ha podido editar la noticia, porfavor, inténtelo de nuevo'));
         }
         $this->set(compact('news'));
     }
@@ -95,9 +104,9 @@ class NewsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $news = $this->News->get($id);
         if ($this->News->delete($news)) {
-            $this->Flash->success(__('The news has been deleted.'));
+            $this->Flash->success(__('La noticia ha sido eliminada'));
         } else {
-            $this->Flash->error(__('The news could not be deleted. Please, try again.'));
+            $this->Flash->error(__('No se ha podido eliminar la noticia, porfavor, inténtelo de nuevo'));
         }
 
         return $this->redirect(['action' => 'index']);

@@ -23,13 +23,14 @@ $cakeDescription = 'Bibliogame';
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <title>
         <?= $cakeDescription ?>
         <?= $this->fetch('title') ?>
     </title>
 
 
-    <?= $this->Html->css(['bootstrap.min', 'animate', 'flex-slider', 'fontawesome', 'owl', 'style', 'swiper-bundle.min.css']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'animate', 'flex-slider', 'fontawesome', 'owl', 'style', 'swiper-bundle.min']) ?>
 
 
     <?= $this->fetch('meta') ?>
@@ -81,7 +82,6 @@ $cakeDescription = 'Bibliogame';
                     <div class="search-input">
                       <form id="search" action="#">
                         <input type="text" placeholder="Buscar un juego" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
                       </form>
                     </div>
                     <!-- ***** Search End ***** -->
@@ -95,7 +95,7 @@ $cakeDescription = 'Bibliogame';
                           <li>
                                <?php
                                  if($this->Identity->isLoggedIn()){
-                                     echo $this->Html->link($this->Identity->get('username'), ['controller' => 'Users', 'action' => 'index']);
+                                     echo $this->Html->link($this->Identity->get('username'), ['controller' => 'Users', 'action' => 'view',$this->Identity->get('id')]);
 
                                  }else{
                                      echo $this->Html->link('Login', [

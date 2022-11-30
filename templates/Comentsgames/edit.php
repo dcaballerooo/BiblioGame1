@@ -6,31 +6,37 @@
  * @var string[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="page-content header-text">
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $comentsgame->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $comentsgame->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Comentsgames'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
     <div class="column-responsive column-80">
         <div class="comentsgames form content">
             <?= $this->Form->create($comentsgame) ?>
             <fieldset>
-                <legend><?= __('Edit Comentsgame') ?></legend>
+                <legend><?= __('Edita tu comentario') ?></legend>
                 <?php
                     echo $this->Form->control('content');
                     echo $this->Form->control('game_id', ['options' => $games]);
-                    echo $this->Form->control('user_id', ['options' => $users]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Guardar')) ?>
             <?= $this->Form->end() ?>
         </div>
+        <aside class="column">
+        <div class="side-nav">
+            <?= $this->Form->postLink(
+                __('Eliminar comentario'),
+                ['action' => 'delete', $comentsgame->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $comentsgame->id), 'class' => 'side-nav-item']
+            ) ?><br>
+            <?= $this->Html->link(__('Volver a los comentarios sobre juegos'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
     </div>
+</div>
+</div>
+    </div>
+</div>
 </div>

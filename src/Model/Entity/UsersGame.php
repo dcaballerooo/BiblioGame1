@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
 /**
  * UsersGame Entity
  *
+ * @property int $id
  * @property int $user_id
  * @property int $game_id
  *
@@ -26,6 +27,8 @@ class UsersGame extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'user_id' => true,
+        'game_id' => true,
         'user' => true,
         'game' => true,
     ];

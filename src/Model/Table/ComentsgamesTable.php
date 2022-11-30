@@ -69,13 +69,11 @@ class ComentsgamesTable extends Table
 
         $validator
             ->integer('game_id')
-            ->notEmptyString('game_id')
-            ->add('game_id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('game_id');
 
         $validator
             ->integer('user_id')
-            ->notEmptyString('user_id')
-            ->add('user_id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('user_id');
 
         return $validator;
     }
